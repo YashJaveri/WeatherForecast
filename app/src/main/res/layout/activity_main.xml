@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/wallpaper_you"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/txt_weatherText"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:text="MUMBAI"
+            android:textColor="@color/white"
+            android:textSize="25.0sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/img_searchIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/img_weatherImage"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="92dp"
+            android:background="@drawable/sun"/>
+
+        <TextView
+            android:id="@+id/txt_weatherText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/txt_avgTemperature"
+            android:layout_toEndOf="@+id/img_weatherImage"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:text="Sunny"
+            tools:ignore="RtlCompat,UnknownId" />
+
+        <TextView
+            android:id="@+id/txt_avgTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/img_weatherImage"
+            android:layout_below="@+id/img_weatherImage"
+            android:gravity="center"
+            android:paddingEnd="26.0dp"
+            android:paddingStart="26.0dp"
+            android:shadowColor="@color/black"
+            android:text="28°"
+            android:textColor="@color/white"
+            android:textSize="84sp"
+            tools:ignore="RtlCompat,UnknownId" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="120dp"
+        android:layout_gravity="bottom"
+        android:background="@color/translucent_Black">
+
+        <ExpandableListView
+            android:id="@+id/expListView_Days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@color/translucent_veryLightGrey"
+            android:groupIndicator="@null"
+            android:dividerHeight="0.2dp">
+        </ExpandableListView>
+    </LinearLayout>
+
+</FrameLayout>
