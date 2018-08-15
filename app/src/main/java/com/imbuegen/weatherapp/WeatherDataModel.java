@@ -10,7 +10,7 @@ public class WeatherDataModel {
     private int temperature;
     private Date dateTime;
     private int resourceOfImage;
-    private DateFormat formatter = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public int get_temperature() {
         return temperature;

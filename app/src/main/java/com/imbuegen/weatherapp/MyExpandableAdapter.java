@@ -64,7 +64,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         if (view == null) {
             LayoutInflater parentLayoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = parentLayoutInflater.inflate(R.layout.days_view, viewGroup);
+            view = parentLayoutInflater.inflate(R.layout.days_view, null);
         }
         TextView listTitleTextView = view
                 .findViewById(R.id.txt_day);
@@ -73,7 +73,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {    //Left
+    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
         ListView child_TimeWiseListView = null;
         if (view == null) {
             child_TimeWiseListView = view.findViewById(R.id.listView_timeWiseWeather);
