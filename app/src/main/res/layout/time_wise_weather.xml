@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listView_timeWiseWeather"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recyclerView_timeWiseWeather"
     android:orientation="horizontal"
     android:layout_width="wrap_content" android:layout_height="wrap_content">
-</ListView>
+</android.support.v7.widget.RecyclerView>

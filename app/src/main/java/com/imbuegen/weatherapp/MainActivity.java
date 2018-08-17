@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
-    private final String APP_ID = "df78dcfa9580e72b15fdf62d406d34ec";
+    final private String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
+    final private String APP_ID = "df78dcfa9580e72b15fdf62d406d34ec";
+    final private List<String> mDAYS_OF_WEEK = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
     private String cityName = "Mumbai,in";
     private String weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
     private HttpURLConnection connection = null;
@@ -39,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<WeatherDataModel> listOfWeatherObjs;
     private ArrayList<WeatherDataModel> tempWdm;
     private ArrayList<String> days_ExpList;
-    final private List<String> mDAYS_OF_WEEK = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 StringBuilder sb;
                 sb = new StringBuilder();
 
-                String line;    //days_ExpListorarily to read lines
+                String line;    //temp to read lines
                 while ((line = reader.readLine()) != null)
                     sb.append(line);                      //appending the JSON String to StringBuilder
 
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                         days_ExpList.add(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1));    //converting int to resp Day
 
                         tempWdm.clear();    //reinitialise temp list to make empty list for every new day
-                        hashMapWeatherData.put(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1),tempWdm);   //put the new day as the key with empty list
+                        hashMapWeatherData.put(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1), tempWdm);   //put the new day as the key with empty list
                     }
                     tempWdm = hashMapWeatherData.get(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1));
                     tempWdm.add(listOfWeatherObjs.get(i));     //add data models to list
@@ -138,15 +139,25 @@ public class MainActivity extends AppCompatActivity {
             if (wdm == null)
                 Toast.makeText(getApplicationContext(), "Unable to fetch data", Toast.LENGTH_LONG).show();
             else {
-              /*Log.d("WeatherApp", "Size = " + wdm.size());
-                for (int i = 0; i < wdm.size(); i++)
-                    Log.d("WeatherApp", Integer.toString(i) + ": Date Time: " + wdm.get(i).getDateTime() + " ,get_temperature: " + Integer.toString(wdm.get(i).get_temperature()) + " ,img source: " + Integer.toString(wdm.get(i).get_ResourceOfImage()));*/
-                ExpandableListView days_ExpListView = findViewById(R.id.expListView_Days);
+                final ExpandableListView days_ExpListView = findViewById(R.id.expListView_Days);
+                //To collapse all others except selected:-
+                days_ExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                    int previousItem = -1;
+
+                    @Override
+                    public void onGroupExpand(int groupPosition) {
+                        if (groupPosition != previousItem)
+                            days_ExpListView.collapseGroup(previousItem);
+                        previousItem = groupPosition;
+                    }
+                });
+
                 MyExpandableAdapter days_ExpListViewAdapter = new MyExpandableAdapter(MainActivity.this, days_ExpList, hashMapWeatherData);
                 days_ExpListView.setAdapter(days_ExpListViewAdapter);
+
                 Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
-                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()){
-                    for (int j=0; j<entry.getValue().size(); j++)
+                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {
+                    for (int j = 0; j < entry.getValue().size(); j++)
                         Log.d("WeatherApp", String.valueOf(j) + ":" + " Temp = " + entry.getValue().get(j).get_temperature() + " ,Day = " + entry.getKey() + " ,Time = " + entry.getValue().get(j).getDateTime() + "\n");
                 }
             }
