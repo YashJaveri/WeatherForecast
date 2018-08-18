@@ -11,7 +11,9 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     final private List<String> mDAYS_OF_WEEK = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
     private String cityName = "Mumbai";
+    private String mainWeatherText = "Sunny";
     private HttpURLConnection connection = null;
     private BufferedReader reader = null;
     private HashMap<String, ArrayList<WeatherDataModel>> hashMapWeatherData;
@@ -116,12 +119,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     sb.append(line);                      //appending the JSON String to StringBuilder
 
                 JSONObject mainJSONObj = new JSONObject(sb.toString());    //Convert JSON String to JSON object
-                JSONArray JSONArray = mainJSONObj.getJSONArray("list");    //Get JSON array of weather of 5 days which has keyword "list"
+                JSONArray mJSONArray = mainJSONObj.getJSONArray("list");    //Get JSON array of weather of 5 days which has keyword "list"
 
                 //1 --> get JSON data and convert to Java Object and built up an ArrayList of it:-
-                for (int i = 0; i < JSONArray.length(); i++) {
-                    JSONObject object = JSONArray.getJSONObject(i);
+                for (int i = 0; i < mJSONArray.length(); i++) {
+                    JSONObject object = mJSONArray.getJSONObject(i);
                     WeatherDataModel dataModel = new WeatherDataModel();
+                    //get weather text for main layout:
+                    if(i==1)
+                        mainWeatherText = object.getJSONArray("weather").getJSONObject(0).getString("main");
 
                     dataModel.set_temperature(object.getJSONObject("main").getDouble("temp"));   //set avg temperature
                     dataModel.setDateTime(object.getString("dt_txt"));    //set date
@@ -187,6 +193,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 MyExpandableAdapter days_ExpListViewAdapter = new MyExpandableAdapter(MainActivity.this, days_ExpList, hashMapWeatherData);
                 days_ExpListView.setAdapter(days_ExpListViewAdapter);
 
+                //Change main part:
+                changeMain();
+
 //                Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
 //                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {
 //                    for (int j = 0; j < entry.getValue().size(); j++)
@@ -194,6 +203,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                }
 
             }
+        }
+
+        void changeMain(){
+            TextView mainTemp = findViewById(R.id.txt_avgTemperature);
+            ImageView mainIcon = findViewById(R.id.img_weatherImage);
+            String s = String.valueOf(listOfWeatherObjs.get(1).get_temperature()) + "°";
+            mainTemp.setText(String.valueOf(s));
+            mainIcon.setImageResource(listOfWeatherObjs.get(1).get_ResourceOfImage());
         }
     }
 }

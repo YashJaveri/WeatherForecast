@@ -34,8 +34,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="92dp"
-            android:background="@drawable/sun"/>
+            android:layout_marginTop="108dp"/>
 
         <TextView
             android:id="@+id/txt_weatherText"
@@ -46,7 +45,7 @@
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="26sp"
             android:text="Sunny"
             tools:ignore="RtlCompat,UnknownId" />
 
@@ -62,7 +61,7 @@
             android:shadowColor="@color/black"
             android:text="28°"
             android:textColor="@color/white"
-            android:textSize="84sp"
+            android:textSize="112sp"
             tools:ignore="RtlCompat,UnknownId" />
     </RelativeLayout>
 
