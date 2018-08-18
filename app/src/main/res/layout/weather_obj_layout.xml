@@ -18,12 +18,10 @@
 
     <ImageView
         android:id="@+id/img_weather"
-        android:contentDescription="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/sun"/>
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/txt_avgTemp"

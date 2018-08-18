@@ -1,14 +1,12 @@
 package com.imbuegen.weatherapp;
 
 import android.content.Context;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -72,32 +70,34 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         }
         TextView listTitleTextView = view
                 .findViewById(R.id.txt_day);
-        listTitleTextView.setText(parent_DaysList.get(i));
+        String s;
+        if (i == 0)
+            s = "Today";
+        else if (i == 1)
+            s = "Tomorrow";
+        else
+            s = parent_DaysList.get(i);
+        listTitleTextView.setText(s);
         return view;
     }
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
         ChildHolder childHolder;
-
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             assert inflater != null;
             view = inflater.inflate(R.layout.time_wise_weather, viewGroup, false);
             childHolder = new ChildHolder();
             view.setTag(childHolder);
-        }
-        else
+        } else
             childHolder = (ChildHolder) view.getTag();
 
         childHolder.horizontalRecView = view.findViewById(R.id.recyclerView_timeWiseWeather);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         childHolder.horizontalRecView.setLayoutManager(layoutManager);
-        /*//Add divider to recyler view:-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(childHolder.horizontalRecView.getContext(),
-                layoutManager.getOrientation());
-        childHolder.horizontalRecView.addItemDecoration(dividerItemDecoration);*/
-        TimeWiseChildListAdapter timeWiseChildListAdapter = new TimeWiseChildListAdapter(context,child_TimeWiseList.get(parent_DaysList.get(i)));
+
+        TimeWiseChildListAdapter timeWiseChildListAdapter = new TimeWiseChildListAdapter(context, child_TimeWiseList.get(parent_DaysList.get(i)));
         childHolder.horizontalRecView.setAdapter(timeWiseChildListAdapter);
         return view;
     }

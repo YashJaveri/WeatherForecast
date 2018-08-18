@@ -8,4 +8,5 @@
     <color name="mCadetBlue">#7AC5CD</color>
     <color name="translucent_veryLightGrey">#B3F1F1F1</color>
     <color name="translucent_Black">#B3191919</color>
+    <color name="complete_Transparent">#00000000</color>
 </resources>

@@ -1,13 +1,17 @@
 package com.imbuegen.weatherapp;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -25,22 +29,21 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     final private String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
     final private String APP_ID = "df78dcfa9580e72b15fdf62d406d34ec";
     final private List<String> mDAYS_OF_WEEK = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
-    private String cityName = "Mumbai,in";
-    private String weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
+    private String cityName = "Mumbai";
     private HttpURLConnection connection = null;
     private BufferedReader reader = null;
     private HashMap<String, ArrayList<WeatherDataModel>> hashMapWeatherData;
     private ArrayList<WeatherDataModel> listOfWeatherObjs;
     private ArrayList<WeatherDataModel> tempWdm;
     private ArrayList<String> days_ExpList;
+    private ExpandableListView days_ExpListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,36 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
         setContentView(R.layout.activity_main);
-        init();
+        spinnerInit();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    void spinnerInit() {
+        Spinner spinner = findViewById(R.id.spinner_cityChange);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.CITIES, R.layout.mspinner_item);
+        spinnerAdapter.setDropDownViewResource(R.layout.mspinner_item_dropdown);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        cityName = getResources().getStringArray(R.array.CITIES)[position];    //get city name from array of string in resources
+        String weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
+        init();
+        new MyJSONTask().execute(weatherUrl);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Toast.makeText(getApplicationContext(), "Restart application", Toast.LENGTH_LONG).show();
+    }
+
+    //Initialisation:
     void init() {
         hashMapWeatherData = new HashMap<>();
         days_ExpList = new ArrayList<>();
@@ -59,14 +89,13 @@ public class MainActivity extends AppCompatActivity {
         tempWdm = new ArrayList<>();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        new MyJSONTask().execute(weatherUrl);
-    }
-
     class MyJSONTask extends AsyncTask<String, Integer, HashMap<String, ArrayList<WeatherDataModel>>> {
+        private ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            pd=ProgressDialog.show(MainActivity.this,"Fetching Data","Please wait!",false);
+        }
 
         @Override
         protected HashMap<String, ArrayList<WeatherDataModel>> doInBackground(String... strings) {
@@ -95,24 +124,23 @@ public class MainActivity extends AppCompatActivity {
                     WeatherDataModel dataModel = new WeatherDataModel();
 
                     dataModel.set_temperature(object.getJSONObject("main").getDouble("temp"));   //set avg temperature
-                    dataModel.set_ResourceOfImage(object.getJSONArray("weather").getJSONObject(0).getInt("id"));    //set imageIcon
                     dataModel.setDateTime(object.getString("dt_txt"));    //set date
+                    dataModel.set_ResourceOfImage(object.getJSONArray("weather").getJSONObject(0).getInt("id"));    //set imageIcon
                     listOfWeatherObjs.add(dataModel);
                 }
                 //2 --> Build list of next 5 days (Main (parent) ArrayList<String>), 3 --> Build HasMap of String & ArrayList<WeatherDataModel> for 3 hourly basis:-
                 for (int i = 0; i < listOfWeatherObjs.size(); i++) {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(listOfWeatherObjs.get(i).getDateTime());
+                    String s = mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1);
 
-                    if (days_ExpList.size() == 0 || !days_ExpList.contains(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1))) {   //converting int to resp day and checking presence
-                        days_ExpList.add(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1));    //converting int to resp Day
-
-                        tempWdm.clear();    //reinitialise temp list to make empty list for every new day
-                        hashMapWeatherData.put(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1), tempWdm);   //put the new day as the key with empty list
-                    }
-                    tempWdm = hashMapWeatherData.get(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1));
-                    tempWdm.add(listOfWeatherObjs.get(i));     //add data models to list
-                    hashMapWeatherData.put(mDAYS_OF_WEEK.get(cal.get(Calendar.DAY_OF_WEEK) - 1), tempWdm);    //modify the list of hashMap of ongoing day-key
+                    if (days_ExpList.size() == 0 || !days_ExpList.contains(s)) {  //check presence
+                        tempWdm.add(listOfWeatherObjs.get(i));
+                        hashMapWeatherData.put(s, tempWdm);    //add data model to list
+                        tempWdm = new ArrayList<>();
+                        days_ExpList.add(s);    //converting int to resp Day
+                    } else
+                        hashMapWeatherData.get(s).add(listOfWeatherObjs.get(i));    //modify the list of hashMap of ongoing day-key
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -136,10 +164,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(HashMap<String, ArrayList<WeatherDataModel>> wdm) {
-            if (wdm == null)
-                Toast.makeText(getApplicationContext(), "Unable to fetch data", Toast.LENGTH_LONG).show();
+            //stop loading
+            if (pd.isShowing())
+                pd.dismiss();
+
+            if (wdm.size() == 0)
+                Toast.makeText(getApplicationContext(), "Unable to fetch data", Toast.LENGTH_SHORT).show();
             else {
-                final ExpandableListView days_ExpListView = findViewById(R.id.expListView_Days);
+                days_ExpListView = findViewById(R.id.expListView_Days);
                 //To collapse all others except selected:-
                 days_ExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                     int previousItem = -1;
@@ -155,11 +187,12 @@ public class MainActivity extends AppCompatActivity {
                 MyExpandableAdapter days_ExpListViewAdapter = new MyExpandableAdapter(MainActivity.this, days_ExpList, hashMapWeatherData);
                 days_ExpListView.setAdapter(days_ExpListViewAdapter);
 
-                Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
-                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {
-                    for (int j = 0; j < entry.getValue().size(); j++)
-                        Log.d("WeatherApp", String.valueOf(j) + ":" + " Temp = " + entry.getValue().get(j).get_temperature() + " ,Day = " + entry.getKey() + " ,Time = " + entry.getValue().get(j).getDateTime() + "\n");
-                }
+//                Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
+//                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {
+//                    for (int j = 0; j < entry.getValue().size(); j++)
+//                        Log.d("WeatherApp", String.valueOf(j) + ":" + " Temp = " + entry.getValue().get(j).get_temperature() + " ,Day = " + entry.getKey() + " ,Time = " + entry.getValue().get(j).getDateTime() + "\n");
+//                }
+
             }
         }
     }

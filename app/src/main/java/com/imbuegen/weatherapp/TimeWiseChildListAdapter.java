@@ -46,7 +46,8 @@ public class TimeWiseChildListAdapter extends RecyclerView.Adapter<TimeWiseChild
 
         viewHolder.timeView.setText(sdf.format(cal.getTime()));
         viewHolder.weatherIcon.setImageResource(weatherDataModel.get_ResourceOfImage());
-        viewHolder.temperatureView.setText(String.valueOf(weatherDataModel.get_temperature()));
+        String s =String.valueOf(weatherDataModel.get_temperature()) + "°";
+        viewHolder.temperatureView.setText(s);
     }
 
     @Override
