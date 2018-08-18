@@ -1,6 +1,7 @@
 package com.imbuegen.weatherapp;
 
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -192,7 +196,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 MyExpandableAdapter days_ExpListViewAdapter = new MyExpandableAdapter(MainActivity.this, days_ExpList, hashMapWeatherData);
                 days_ExpListView.setAdapter(days_ExpListViewAdapter);
-
+                //default expand group 1;
+                days_ExpListView.expandGroup(1);
                 //Change main part:
                 changeMain();
 
@@ -206,11 +211,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         void changeMain(){
-            TextView mainTemp = findViewById(R.id.txt_avgTemperature);
+            TextView mainTempView = findViewById(R.id.txt_avgTemperature);
             ImageView mainIcon = findViewById(R.id.img_weatherImage);
+            TextView mainWeatherTextView = findViewById(R.id.txt_weatherText);
+
             String s = String.valueOf(listOfWeatherObjs.get(1).get_temperature()) + "°";
-            mainTemp.setText(String.valueOf(s));
+            mainTempView.setTypeface(Typer.set(MainActivity.this).getFont(Font.ROBOTO_THIN));
+            mainTempView.setText(String.valueOf(s));
             mainIcon.setImageResource(listOfWeatherObjs.get(1).get_ResourceOfImage());
+            mainWeatherTextView.setText(mainWeatherText);
         }
     }
 }

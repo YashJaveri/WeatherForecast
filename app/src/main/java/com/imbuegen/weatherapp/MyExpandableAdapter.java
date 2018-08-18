@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,14 +72,27 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         TextView listTitleTextView = view
                 .findViewById(R.id.txt_day);
         String s;
-        if (i == 0)
-            s = "Today";
-        else if (i == 1)
-            s = "Tomorrow";
-        else
-            s = parent_DaysList.get(i);
-        listTitleTextView.setText(s);
-        return view;
+        if (new SimpleDateFormat("HH").format(child_TimeWiseList.get(parent_DaysList.get(0)).get(0).getDateTime()).equals("21")) {
+            if (i == 0)
+                s = "Yesterday";
+            else if (i == 1)
+                s = "Today";
+            else if (i == 2)
+                s = "Tomorrow";
+            else
+                s = parent_DaysList.get(i);
+            listTitleTextView.setText(s);
+            return view;
+        } else {
+            if (i == 0)
+                s = "Today";
+            else if (i == 1)
+                s = "Tomorrow";
+            else
+                s = parent_DaysList.get(i);
+            listTitleTextView.setText(s);
+            return view;
+        }
     }
 
     @Override
