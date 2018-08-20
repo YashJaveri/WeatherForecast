@@ -84,15 +84,10 @@ public class MainActivity extends AppCompatActivity {
         editCityName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    search();
-                    Log.d("WeatherApp","setOnDitorCalled");
-                    return true;
-                }
+                search();
                 return false;
             }
         });
-        new MyJSONTask().execute(weatherURL);
 
         editCityName.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.VISIBLE);
@@ -111,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         weatherURL =  BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
+        Log.d("WeatherApp","URL: " + weatherURL);
         new MyJSONTask().execute(weatherURL);
 
     }
@@ -255,14 +251,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                editCityName.setText(cityName);
+
                 MyExpandableAdapter days_ExpListViewAdapter = new MyExpandableAdapter(MainActivity.this, days_ExpList, hashMapWeatherData);
                 days_ExpListView.setAdapter(days_ExpListViewAdapter);
                 //default expand group 1:
                 days_ExpListView.expandGroup(1);
                 //Change main part:
                 changeMain();
-
-                editCityName.setText(cityName);
 
 //                Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
 //                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {

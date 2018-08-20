@@ -42,7 +42,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:gravity="center"
-            android:imeOptions="actionSearch"
             android:text="Mumbai"
             android:textColor="@color/white"
             android:textSize="20sp"
