@@ -10,4 +10,4 @@
     android:textSize="20sp"
     android:textStyle="bold"
     android:textAlignment="center"
-    android:gravity="center"/>
+    android:layout_gravity="center"/>

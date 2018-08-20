@@ -13,52 +13,56 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--<Spinner
+        <Spinner
             android:id="@+id/spinner_cityChange"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/txt_weatherText"
-            android:popupBackground="@color/translucent_Black"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />-->
-
-        <TextView
-            android:id="@+id/txt_cityName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="35dp"
             android:gravity="center"
-            android:text="Mumbai"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:overlapAnchor="false"
+            android:padding="1dp"
+            android:popupBackground="@color/translucent_Black"
+            tools:targetApi="lollipop" />
 
-        <EditText
-            android:id="@+id/edit_txt_cityName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
-            android:gravity="center"
-            android:text="Mumbai"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:windowSoftInputMode="stateHidden" />
+        <!-- <TextView
+             android:id="@+id/txt_cityName"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentTop="true"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="35dp"
+             android:gravity="center"
+             android:text="Mumbai"
+             android:textColor="@color/white"
+             android:textSize="20sp"
+             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btn_searchBtn"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/txt_cityName"
-            android:layout_marginEnd="25dp"
-            android:background="@drawable/search"
-            android:backgroundTint="@color/white"
-            android:onClick="searchOnClick" />
+         <EditText
+             android:id="@+id/edit_txt_cityName"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="26dp"
+             android:gravity="center"
+             android:text="Mumbai"
+             android:textColor="@color/white"
+             android:textSize="20sp"
+             android:textStyle="bold"
+             android:windowSoftInputMode="stateHidden" />
 
+         <Button
+             android:id="@+id/btn_searchBtn"
+             android:layout_width="26dp"
+             android:layout_height="26dp"
+             android:layout_alignParentEnd="true"
+             android:layout_alignTop="@+id/txt_cityName"
+             android:layout_marginEnd="25dp"
+             android:background="@drawable/search"
+             android:backgroundTint="@color/white"
+             android:onClick="searchOnClick" />
+ -->
         <ImageView
             android:id="@+id/img_weatherImage"
             android:layout_width="34dp"
@@ -76,7 +80,7 @@
             android:layout_toEndOf="@+id/img_weatherImage"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:text="Rain"
+            android:text="--"
             android:textColor="@color/white"
             android:textSize="26sp"
             tools:ignore="RtlCompat,UnknownId" />
@@ -91,7 +95,7 @@
             android:paddingEnd="26.0dp"
             android:paddingStart="26.0dp"
             android:shadowColor="@color/black"
-            android:text="28°"
+            android:text=":("
             android:textColor="@color/white"
             android:textSize="92sp"
             tools:ignore="RtlCompat,UnknownId" />
@@ -111,7 +115,7 @@
             android:layout_height="wrap_content"
             android:divider="@color/translucent_veryLightGrey"
             android:dividerHeight="0.2dp"
-            android:groupIndicator="@null"></ExpandableListView>
+            android:groupIndicator="@null" />
     </LinearLayout>
 
 </FrameLayout>
