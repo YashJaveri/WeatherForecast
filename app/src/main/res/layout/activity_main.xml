@@ -3,24 +3,62 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/wallpaper_you"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Spinner
+        <!--<Spinner
             android:id="@+id/spinner_cityChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/txt_weatherText"
             android:popupBackground="@color/translucent_Black"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true" />-->
+
+        <TextView
+            android:id="@+id/txt_cityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:text="Mumbai"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_txt_cityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:gravity="center"
+            android:imeOptions="actionSearch"
+            android:text="Mumbai"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:windowSoftInputMode="stateHidden" />
+
+        <Button
+            android:id="@+id/btn_searchBtn"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/txt_cityName"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/search"
+            android:backgroundTint="@color/white"
+            android:onClick="searchOnClick" />
 
         <ImageView
             android:id="@+id/img_weatherImage"
@@ -29,7 +67,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="92dp"/>
+            android:layout_marginTop="92dp" />
 
         <TextView
             android:id="@+id/txt_weatherText"
@@ -39,9 +77,9 @@
             android:layout_toEndOf="@+id/img_weatherImage"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
+            android:text="Rain"
             android:textColor="@color/white"
             android:textSize="26sp"
-            android:text="Rain"
             tools:ignore="RtlCompat,UnknownId" />
 
         <TextView
@@ -63,19 +101,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="120dp"
         android:layout_gravity="bottom"
-        android:background="@color/translucent_Black">
+        android:layout_marginTop="120dp"
+        android:background="@color/translucent_Black"
+        android:orientation="vertical">
 
         <ExpandableListView
             android:id="@+id/expListView_Days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:divider="@color/translucent_veryLightGrey"
-            android:groupIndicator="@null"
-            android:dividerHeight="0.2dp">
-        </ExpandableListView>
+            android:dividerHeight="0.2dp"
+            android:groupIndicator="@null"></ExpandableListView>
     </LinearLayout>
 
 </FrameLayout>

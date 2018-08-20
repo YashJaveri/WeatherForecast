@@ -1,16 +1,23 @@
 package com.imbuegen.weatherapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -23,6 +30,7 @@ import com.elmargomez.typer.Typer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,13 +44,18 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     final private String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
     final private String APP_ID = "df78dcfa9580e72b15fdf62d406d34ec";
     final private List<String> mDAYS_OF_WEEK = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
+    private Button searchButton;
+    private EditText editCityName;
+    private TextView cityNameView;
+
     private String cityName = "Mumbai";
+    private String weatherURL = BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
     private String mainWeatherText = "Sunny";
     private HttpURLConnection connection = null;
     private BufferedReader reader = null;
@@ -59,7 +72,55 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
         setContentView(R.layout.activity_main);
-        spinnerInit();
+
+        init();
+        //spinnerInit();
+
+        searchButton = findViewById(R.id.btn_searchBtn);
+        editCityName = findViewById(R.id.edit_txt_cityName);
+        cityNameView = findViewById(R.id.txt_cityName);
+        editCityName.setVisibility(View.INVISIBLE);
+
+        editCityName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    search();
+                    Log.d("WeatherApp","setOnDitorCalled");
+                    return true;
+                }
+                return false;
+            }
+        });
+        new MyJSONTask().execute(weatherURL);
+
+        editCityName.setVisibility(View.INVISIBLE);
+        searchButton.setVisibility(View.VISIBLE);
+        cityNameView.setVisibility(View.VISIBLE);
+    }
+
+    public void search() {
+        cityName = editCityName.getText().toString();
+
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        assert imm != null;
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        weatherURL =  BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
+        new MyJSONTask().execute(weatherURL);
+
+    }
+
+    public void searchOnClick(View view) {
+        editCityName.setVisibility(View.VISIBLE);
+        editCityName.setClickable(true);
+        editCityName.setText(cityName);
+        searchButton.setVisibility(View.INVISIBLE);
+        cityNameView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -67,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onResume();
     }
 
-    void spinnerInit() {
+/*  private void spinnerInit() {
         Spinner spinner = findViewById(R.id.spinner_cityChange);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.CITIES, R.layout.mspinner_item);
         spinnerAdapter.setDropDownViewResource(R.layout.mspinner_item_dropdown);
@@ -86,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         Toast.makeText(getApplicationContext(), "Restart application", Toast.LENGTH_LONG).show();
-    }
+    }*/
 
     //Initialisation:
     void init() {
@@ -101,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         protected void onPreExecute() {
-            pd=ProgressDialog.show(MainActivity.this,"Fetching Data","Please wait!",false);
+            pd = ProgressDialog.show(MainActivity.this, "Fetching Data", "Please wait!", false);
         }
 
         @Override
@@ -130,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     JSONObject object = mJSONArray.getJSONObject(i);
                     WeatherDataModel dataModel = new WeatherDataModel();
                     //get weather text for main layout:
-                    if(i==1)
+                    if (i == 1)
                         mainWeatherText = object.getJSONArray("weather").getJSONObject(0).getString("main");
 
                     dataModel.set_temperature(object.getJSONObject("main").getDouble("temp"));   //set avg temperature
@@ -184,22 +245,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 days_ExpListView = findViewById(R.id.expListView_Days);
                 //To collapse all others except selected:-
                 days_ExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-                    int previousItem = -1;
-
+                    int previousItem = 1;
                     @Override
                     public void onGroupExpand(int groupPosition) {
-                        if (groupPosition != previousItem)
+                        if (groupPosition != previousItem) {
                             days_ExpListView.collapseGroup(previousItem);
-                        previousItem = groupPosition;
+                            previousItem = groupPosition;
+                        }
                     }
                 });
 
                 MyExpandableAdapter days_ExpListViewAdapter = new MyExpandableAdapter(MainActivity.this, days_ExpList, hashMapWeatherData);
                 days_ExpListView.setAdapter(days_ExpListViewAdapter);
-                //default expand group 1;
+                //default expand group 1:
                 days_ExpListView.expandGroup(1);
                 //Change main part:
                 changeMain();
+
+                editCityName.setText(cityName);
 
 //                Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
 //                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {
@@ -210,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
 
-        void changeMain(){
+        private void changeMain() {
             TextView mainTempView = findViewById(R.id.txt_avgTemperature);
             ImageView mainIcon = findViewById(R.id.img_weatherImage);
             TextView mainWeatherTextView = findViewById(R.id.txt_weatherText);

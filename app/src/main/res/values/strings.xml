@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Weather Forecast</string>
     <string-array name="CITIES">
-        <item>Mumbai</item>
+        <item>mumbai</item>
         <item>New York</item>
         <item>London</item>
         <item>Rome</item>
