@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(HashMap<String, ArrayList<WeatherDataModel>> wdm) {
-            Log.d("WeatherApp", String.valueOf(wdm.size()));
             //stop loading
             if (pd.isShowing())
                 pd.dismiss();
