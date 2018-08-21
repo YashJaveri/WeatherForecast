@@ -31,6 +31,7 @@ public class TimeWiseChildListAdapter extends RecyclerView.Adapter<TimeWiseChild
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         View linearLayout = inflater.inflate(R.layout.weather_obj_layout, null, false);
 
         ViewHolder viewHolder = new ViewHolder(linearLayout);
@@ -46,7 +47,7 @@ public class TimeWiseChildListAdapter extends RecyclerView.Adapter<TimeWiseChild
 
         viewHolder.timeView.setText(sdf.format(cal.getTime()));
         viewHolder.weatherIcon.setImageResource(weatherDataModel.get_ResourceOfImage());
-        String s =String.valueOf(weatherDataModel.get_temperature()) + "°";
+        String s = String.valueOf(weatherDataModel.get_temperature()) + "°";
         viewHolder.temperatureView.setText(s);
     }
 

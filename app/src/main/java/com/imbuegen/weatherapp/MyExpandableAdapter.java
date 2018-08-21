@@ -3,6 +3,7 @@ package com.imbuegen.weatherapp;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> parent_DaysList;  //parent
     private HashMap<String, ArrayList<WeatherDataModel>> child_TimeWiseList;    //child
+    private TimeWiseChildListAdapter timeWiseChildListAdapter;
 
     MyExpandableAdapter(Context _context, List<String> _parent_DaysList, HashMap<String, ArrayList<WeatherDataModel>> _child_TimeWiseList) {
         this.context = _context;
@@ -110,9 +112,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         childHolder.horizontalRecView = view.findViewById(R.id.recyclerView_timeWiseWeather);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         childHolder.horizontalRecView.setLayoutManager(layoutManager);
-
-        TimeWiseChildListAdapter timeWiseChildListAdapter = new TimeWiseChildListAdapter(context, child_TimeWiseList.get(parent_DaysList.get(i)));
-        childHolder.horizontalRecView.setAdapter(timeWiseChildListAdapter);
+            timeWiseChildListAdapter = new TimeWiseChildListAdapter(context, child_TimeWiseList.get(parent_DaysList.get(i)));
+            childHolder.horizontalRecView.setAdapter(timeWiseChildListAdapter);
         return view;
     }
 
