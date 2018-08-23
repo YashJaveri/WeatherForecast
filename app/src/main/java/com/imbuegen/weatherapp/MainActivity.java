@@ -1,6 +1,7 @@
 package com.imbuegen.weatherapp;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -8,7 +9,6 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,12 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elmargomez.typer.Font;
 import com.elmargomez.typer.Typer;
+import com.imbuegen.weatherapp.Constatnts.Constants;
+import com.imbuegen.weatherapp.DataModels.WeatherDataModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,24 +40,27 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+import static android.provider.UserDictionary.Words.APP_ID;
+
+public class MainActivity extends AppCompatActivity{
 
     //Server ==>
     private String cityName = "Mumbai";
     private String mainWeatherText = "Sunny";
     private HttpURLConnection connection = null;
     final private String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
-    final private String APP_ID = "df78dcfa9580e72b15fdf62d406d34ec";
+    final private String mAPP_ID = Constants.getAPP_ID();   //put your APP ID/API Key instead
     final private List<String> mDAYS_OF_WEEK = Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-    private String weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
-
+    private String weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + mAPP_ID;
 
     private BufferedReader reader = null;
     private HashMap<String, ArrayList<WeatherDataModel>> hashMapWeatherData;
     private ArrayList<WeatherDataModel> listOfWeatherObjs;
     private ArrayList<WeatherDataModel> tempWdm;
     private ArrayList<String> days_ExpList;
+    private Boolean didRead = false;
 
     //Views ==>
     private ExpandableListView days_ExpListView;
@@ -117,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
     public void searchOnClick(View view) {
         cityNameView.setVisibility(View.INVISIBLE);
         searchBtn.setVisibility(View.INVISIBLE);
+        editCityName.setActivated(true);
         editCityName.setVisibility(View.VISIBLE);
+        editCityName.setSelection(0,editCityName.getText().length());
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 
         editCityName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -125,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (editCityName.getText() != null && !cityName.equals(editCityName.getText().toString())) {
                     cityName = editCityName.getText().toString();
-                    weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + APP_ID;
+                    weatherUrl = BASE_URL + cityName + "&mode=json&appid=" + mAPP_ID;
                     new MyJSONTask().execute(weatherUrl);
                 }
                 cityNameView.setVisibility(View.VISIBLE);
@@ -155,7 +161,10 @@ public class MainActivity extends AppCompatActivity {
                 connection = (HttpURLConnection) url.openConnection();//Initializing the connection
                 connection.setRequestMethod("GET");
                 connection.connect();
+
                 reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                didRead = true;    //Remain false if above statement encounters error!
+
                 StringBuilder sb;
                 sb = new StringBuilder();
 
@@ -212,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                return hashMapWeatherData;
             }
+            return hashMapWeatherData;
         }
 
         @Override
@@ -222,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
             if (pd.isShowing())
                 pd.dismiss();
 
-            if (wdm.size() == 0)
+            if (!didRead)
                 Toast.makeText(MainActivity.this, "Unable to fetch data!", Toast.LENGTH_LONG).show();
             else {
                 days_ExpListView = findViewById(R.id.expListView_Days);
@@ -243,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 days_ExpListView.expandGroup(1);
                 //Change main part:
                 changeMain();
+                didRead = false;
             }
 //                Log.d("WeatherApp", String.valueOf(hashMapWeatherData.size()));
 //                for (Map.Entry<String, ArrayList<WeatherDataModel>> entry : hashMapWeatherData.entrySet()) {

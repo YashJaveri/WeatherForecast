@@ -1,4 +1,6 @@
-package com.imbuegen.weatherapp;
+package com.imbuegen.weatherapp.DataModels;
+
+import com.imbuegen.weatherapp.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,31 +47,31 @@ public class WeatherDataModel {
             isNight = true;
 
         if (weatherId >= 0 && weatherId < 300)
-            return R.drawable.storm;    //thunder storm
+            return R.drawable.ic_bolt;    //thunder storm
         else if (weatherId >= 300 && weatherId < 500)
-            return R.drawable.drop;    //light rains
+            return R.drawable.ic_drop;    //light rains
         else if (weatherId >= 500 && weatherId < 600)
-            return R.drawable.rain;  //shower
+            return R.drawable.ic_rain_2;  //shower
         else if (weatherId >= 600 && weatherId <= 700)
-            return R.drawable.snowflake; //snow
+            return R.drawable.ic_ice_crystal; //snow
         else if (weatherId >= 701 && weatherId <= 771)
-            return R.drawable.haze_2;   //foggy
+            return R.drawable.ic_haze;   //foggy
         else if (weatherId >= 772 && weatherId < 800)
-            return R.drawable.storm;   //thunder storm
+            return R.drawable.ic_bolt;   //thunder storm
         else if (weatherId == 800)
-            return (isNight) ? R.drawable.moon : R.drawable.sun;  //sunny || night
+            return (isNight) ? R.drawable.ic_night : R.drawable.ic_sun;  //sunny || night
         else if (weatherId >= 801 && weatherId <= 804)
-            return R.drawable.cloudy;   //cloudy
+            return R.drawable.ic_cloud;   //cloudy
         else if (weatherId >= 900 && weatherId <= 902)
-            return R.drawable.cloudy;    //thunder storm
+            return R.drawable.ic_cloud;    //cloudy
         else if (weatherId == 903)
-            return R.drawable.snowflake;    //snow
+            return R.drawable.ic_ice_crystal;    //snow
         else if (weatherId == 904)
-            return (isNight) ? R.drawable.moon : R.drawable.sun;  //sunny || night
+            return (isNight) ? R.drawable.ic_night : R.drawable.ic_sun;  //sunny || night
         else if (weatherId >= 905 && weatherId <= 1000)
-            return R.drawable.storm;    //thunder storm
+            return R.drawable.ic_bolt;    //thunder storm
         else
-            return (isNight) ? R.drawable.moon : R.drawable.sun;  //sunny || night
+            return (isNight) ? R.drawable.ic_night : R.drawable.ic_sun;  //sunny || night
     }
 
     public void setDateTime(String _dateTimeString) {

@@ -8,10 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.imbuegen.weatherapp.DataModels.WeatherDataModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="Mumbai"
             android:textColor="@color/white"
@@ -42,11 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="6dp"
             android:gravity="center"
-            android:maxLines="1"
             android:inputType="text"
-            android:text="Mumbai"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -54,13 +53,12 @@
 
         <Button
             android:id="@+id/btn_searchBtn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/txt_cityName"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/txt_cityName"
             android:layout_marginEnd="25dp"
-            android:background="@drawable/search"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_search"
             android:onClick="searchOnClick" />
 
         <ImageView
@@ -115,6 +113,7 @@
             android:layout_height="wrap_content"
             android:divider="@color/translucent_veryLightGrey"
             android:dividerHeight="0.2dp"
+            android:listSelector="@android:color/transparent"
             android:groupIndicator="@null" />
     </LinearLayout>
 

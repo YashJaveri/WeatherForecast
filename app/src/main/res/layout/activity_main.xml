@@ -25,44 +25,42 @@
             android:padding="1dp"
             android:popupBackground="@color/translucent_Black"
             tools:targetApi="lollipop" />-->
-         <TextView
-             android:id="@+id/txt_cityName"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignParentTop="true"
-             android:layout_centerHorizontal="true"
-             android:layout_marginTop="35dp"
-             android:gravity="center"
-             android:text="Mumbai"
-             android:textColor="@color/white"
-             android:textSize="20sp"
-             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txt_cityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:text="Mumbai"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-         <EditText
-             android:id="@+id/edit_txt_cityName"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_centerHorizontal="true"
-             android:layout_marginTop="26dp"
-             android:gravity="center"
-             android:maxLines="1"
-             android:inputType="text"
-             android:text="Mumbai"
-             android:textColor="@color/white"
-             android:textSize="20sp"
-             android:textStyle="bold"
-             android:windowSoftInputMode="stateHidden" />
+        <EditText
+            android:id="@+id/edit_txt_cityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:windowSoftInputMode="stateHidden" />
 
-         <Button
-             android:id="@+id/btn_searchBtn"
-             android:layout_width="24dp"
-             android:layout_height="24dp"
-             android:layout_alignParentEnd="true"
-             android:layout_alignTop="@+id/txt_cityName"
-             android:layout_marginEnd="25dp"
-             android:background="@drawable/search"
-             android:backgroundTint="@color/white"
-             android:onClick="searchOnClick" />
+        <Button
+            android:id="@+id/btn_searchBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/txt_cityName"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/ic_search"
+            android:onClick="searchOnClick" />
 
         <ImageView
             android:id="@+id/img_weatherImage"
@@ -116,7 +114,8 @@
             android:layout_height="wrap_content"
             android:divider="@color/translucent_veryLightGrey"
             android:dividerHeight="0.2dp"
-            android:groupIndicator="@null" />
+            android:groupIndicator="@null"
+            android:listSelector="@android:color/transparent" />
     </LinearLayout>
 
 </FrameLayout>
