@@ -3,7 +3,5 @@ Using: Android Studio, Written in: Java, XML.
 
 Screenshots:-
 
-![Ss1](/ScreenShots/Screenshot_1534883621.png)
-![Ss2](/ScreenShots/Screenshot_1534883631.png)
-![Ss3](/ScreenShots/Screenshot_1534883802.png)
-![Ss4](/ScreenShots/Screenshot_1534883830.png)
+![Ss1](/ScreenShots/Screenshot_1535050290.png)
+![Ss2](/ScreenShots/Screenshot_1535050569.png)
